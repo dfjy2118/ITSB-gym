@@ -1,0 +1,884 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:var(--font-sans)}
+.screen{display:none;width:100%}.screen.active{display:block}
+.btn{cursor:pointer;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary);padding:8px 16px;border-radius:var(--border-radius-md);font-size:13px;transition:background 0.15s}.btn:hover{background:var(--color-background-secondary)}
+.btn-primary{background:#185FA5;color:#fff;border-color:#185FA5}.btn-primary:hover{background:#0C447C}
+.btn-danger{background:#A32D2D;color:#fff;border-color:#A32D2D}.btn-danger:hover{background:#791F1F}
+.btn-success{background:#3B6D11;color:#fff;border-color:#3B6D11}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem}
+.mc{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:1rem;text-align:center}
+.mc-l{font-size:12px;color:var(--color-text-secondary);margin-bottom:4px}
+.mc-v{font-size:20px;font-weight:500;color:var(--color-text-primary)}
+.mc-s{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.sidebar{width:190px;min-height:540px;background:var(--color-background-secondary);border-right:0.5px solid var(--color-border-tertiary);padding:.75rem;display:flex;flex-direction:column;gap:3px;flex-shrink:0}
+.si{padding:7px 10px;border-radius:var(--border-radius-md);font-size:12px;cursor:pointer;color:var(--color-text-secondary);display:flex;align-items:center;gap:7px}
+.si:hover,.si.active{background:var(--color-background-primary);color:var(--color-text-primary)}.si.active{font-weight:500}
+.dl{display:flex;gap:0;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;min-height:540px}
+.mc-area{flex:1;padding:1.1rem;background:var(--color-background-primary);overflow:auto}
+.tb{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:0.5px solid var(--color-border-tertiary)}
+.badge{font-size:11px;padding:3px 8px;border-radius:20px;font-weight:500}
+.bs{background:#EAF3DE;color:#27500A}.bd{background:#FCEBEB;color:#791F1F}.bw{background:#FAEEDA;color:#633806}.bi{background:#E6F1FB;color:#0C447C}
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{text-align:left;padding:7px 9px;font-weight:500;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary);font-size:11px}
+.tbl td{padding:7px 9px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
+.alert{background:#FCEBEB;border:0.5px solid #F7C1C1;border-radius:var(--border-radius-md);padding:9px 12px;margin-bottom:10px;display:flex;align-items:flex-start;gap:9px}
+.alert-t{font-size:12px;color:#791F1F;font-weight:500}
+.alert-s{font-size:11px;color:#A32D2D;margin-top:2px}
+.pf{width:300px;border:2px solid var(--color-border-secondary);border-radius:28px;overflow:hidden;background:var(--color-background-primary);margin:0 auto}
+.pb{height:26px;background:var(--color-background-secondary);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--color-text-secondary)}
+.pb2{padding:.85rem}
+.ig{margin-bottom:10px}
+.ig label{font-size:11px;color:var(--color-text-secondary);display:block;margin-bottom:3px}
+.ig input{width:100%;padding:7px 9px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-size:12px}
+.err{font-size:11px;color:#A32D2D;margin-top:3px;display:none}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:.9rem}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:.9rem}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:.9rem}
+.nb{font-size:11px;color:#185FA5;cursor:pointer;margin-bottom:.75rem;display:inline-flex;align-items:center;gap:3px}
+.div{height:0.5px;background:var(--color-border-tertiary);margin:.75rem 0}
+.step-indicator{display:flex;align-items:center;gap:6px;margin-bottom:1rem}
+.step-dot{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0}
+.step-dot.done{background:#EAF3DE;color:#27500A}
+.step-dot.active{background:#E6F1FB;color:#0C447C}
+.step-dot.pending{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.step-line{flex:1;height:0.5px;background:var(--color-border-tertiary)}
+.pay-method-btn{width:100%;padding:10px 12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px;margin-bottom:7px;transition:border-color 0.15s}
+.pay-method-btn:hover{border-color:#185FA5}
+.pay-method-btn.selected{border:1.5px solid #185FA5;background:#E6F1FB}
+.qr-code{display:flex;justify-content:center;margin:10px 0}
+.timer-ring{text-align:center;margin:8px 0}
+.copy-code{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:8px 12px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.anomaly-slider-wrap{margin:1rem 0}
+.anomaly-item{padding:8px 10px;border-radius:var(--border-radius-md);margin-bottom:6px;border:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;gap:10px}
+.anomaly-item.flagged{border-color:#F09595;background:#FCEBEB}
+.sc-bar{height:8px;border-radius:4px;background:var(--color-border-tertiary);margin-top:4px;overflow:hidden}
+.sc-fill{height:100%;border-radius:4px;transition:width 0.4s}
+.pulse{animation:pulse-anim 1.2s infinite}
+@keyframes pulse-anim{0%,100%{opacity:1}50%{opacity:0.4}}
+</style>
+<h2 class="sr-only">ITSB Gym HCI v2 — alur pembayaran lengkap + simulasi anomali</h2>
+
+<div id="s-login" class="screen active">
+<div style="max-width:380px;margin:1.5rem auto">
+  <div style="text-align:center;margin-bottom:1.5rem">
+    <div style="font-size:26px;font-weight:500;color:var(--color-text-primary)">ITSB GYM</div>
+    <div style="font-size:12px;color:var(--color-text-secondary);margin-top:3px">Sistem manajemen terpadu</div>
+  </div>
+  <div class="card">
+    <div class="ig"><label>Email</label><input id="lu" type="text" placeholder="email@gym.id"/></div>
+    <div class="ig"><label>Password</label><input id="lp" type="password" placeholder="Password"/></div>
+    <div id="lerr" class="err">Email atau password salah.</div>
+    <button class="btn btn-primary" style="width:100%;margin-top:6px" onclick="doLogin()">Masuk</button>
+    <div style="text-align:center;margin-top:10px;font-size:11px;color:var(--color-text-secondary)">
+      Belum punya akun? <span style="color:#185FA5;cursor:pointer" onclick="gS('s-reg')">Daftar</span>
+    </div>
+  </div>
+  <div style="margin-top:1rem;background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:9px 12px">
+    <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:5px;font-weight:500">Akun demo:</div>
+    <div style="font-size:11px;color:var(--color-text-secondary);line-height:2">
+      <b>client@gym.id</b> / 1234 <span class="badge bi">Client Mobile</span><br>
+      <b>kasir@gym.id</b> / 1234 <span class="badge bs">Kasir</span><br>
+      <b>admin@gym.id</b> / 1234 <span class="badge bw">Admin Server</span><br>
+      <b>owner@gym.id</b> / 1234 <span class="badge bi">Owner</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="s-reg" class="screen">
+<div style="max-width:380px;margin:1.5rem auto">
+  <span class="nb" onclick="gS('s-login')"><i class="ti ti-arrow-left"></i> Kembali</span>
+  <div class="card">
+    <div style="font-size:14px;font-weight:500;margin-bottom:.75rem">Registrasi Akun Baru</div>
+    <div class="ig"><label>Nama Lengkap</label><input type="text" placeholder="Nama lengkap"/></div>
+    <div class="ig"><label>Email</label><input type="text" placeholder="email@example.com"/></div>
+    <div class="ig"><label>No. Telepon</label><input type="text" placeholder="+62..."/></div>
+    <div class="ig"><label>Password</label><input type="password" placeholder="Min. 8 karakter"/></div>
+    <div class="ig"><label>Konfirmasi Password</label><input type="password" placeholder="Ulangi password"/></div>
+    <button class="btn btn-primary" style="width:100%;margin-top:6px" onclick="gS('s-login')">Daftar & Kirim Verifikasi</button>
+    <div style="font-size:10px;color:var(--color-text-secondary);margin-top:8px;text-align:center">Hak akses ditentukan otomatis oleh database</div>
+  </div>
+</div>
+</div>
+
+<div id="s-client" class="screen">
+<div style="background:var(--color-background-secondary);padding:1rem;border-radius:var(--border-radius-lg)">
+<div class="pf">
+  <div class="pb">ITSB GYM — Client App</div>
+  <div class="pb2">
+    <div id="cv-home">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem">
+        <div><div style="font-size:14px;font-weight:500">Halo, Budi</div><div style="font-size:11px;color:var(--color-text-secondary)">Member Aktif</div></div>
+        <button class="btn" style="font-size:10px;padding:3px 7px" onclick="doLogout()">Keluar</button>
+      </div>
+      <div style="background:#E6F1FB;border-radius:var(--border-radius-lg);padding:10px;margin-bottom:.75rem;text-align:center">
+        <div style="font-size:10px;color:#0C447C;margin-bottom:5px">QR Code Akses Masuk — Aktif</div>
+        <svg width="80" height="80" viewBox="0 0 80 80"><rect width="80" height="80" fill="#fff" rx="5"/><rect x="7" y="7" width="24" height="24" rx="2" fill="#185FA5"/><rect x="11" y="11" width="16" height="16" rx="1" fill="#fff"/><rect x="14" y="14" width="10" height="10" rx="1" fill="#185FA5"/><rect x="49" y="7" width="24" height="24" rx="2" fill="#185FA5"/><rect x="53" y="11" width="16" height="16" rx="1" fill="#fff"/><rect x="56" y="14" width="10" height="10" rx="1" fill="#185FA5"/><rect x="7" y="49" width="24" height="24" rx="2" fill="#185FA5"/><rect x="11" y="53" width="16" height="16" rx="1" fill="#fff"/><rect x="14" y="56" width="10" height="10" rx="1" fill="#185FA5"/><rect x="40" y="40" width="7" height="7" fill="#185FA5"/><rect x="51" y="40" width="5" height="5" fill="#185FA5"/><rect x="59" y="40" width="9" height="9" fill="#185FA5"/><rect x="40" y="51" width="5" height="14" fill="#185FA5"/><rect x="49" y="55" width="7" height="7" fill="#185FA5"/><rect x="59" y="51" width="9" height="5" fill="#185FA5"/><rect x="59" y="60" width="9" height="5" fill="#185FA5"/></svg>
+        <div style="font-size:10px;color:#0C447C;margin-top:3px">Berlaku: 30 Jul 2025 · 18 hari</div>
+      </div>
+      <div class="g2" style="margin-bottom:.75rem">
+        <div class="mc"><div class="mc-l">Sisa Hari</div><div class="mc-v" style="font-size:16px">18</div></div>
+        <div class="mc"><div class="mc-l">Kunjungan</div><div class="mc-v" style="font-size:16px">24x</div></div>
+      </div>
+      <div style="font-size:12px;font-weight:500;margin-bottom:6px">Pilih Paket</div>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:.75rem">
+        <div class="card" style="padding:8px 10px;display:flex;justify-content:space-between;align-items:center">
+          <div><div style="font-size:12px;font-weight:500">Harian</div><div style="font-size:10px;color:var(--color-text-secondary)">Rp 15.000</div></div>
+          <button class="btn btn-primary" style="font-size:10px;padding:3px 8px" onclick="startPayment('Harian','15000')">Beli</button>
+        </div>
+        <div class="card" style="padding:8px 10px;display:flex;justify-content:space-between;align-items:center">
+          <div><div style="font-size:12px;font-weight:500">Bulanan</div><div style="font-size:10px;color:var(--color-text-secondary)">Rp 150.000</div></div>
+          <button class="btn btn-primary" style="font-size:10px;padding:3px 8px" onclick="startPayment('Bulanan','150000')">Beli</button>
+        </div>
+        <div class="card" style="padding:8px 10px;display:flex;justify-content:space-between;align-items:center">
+          <div><div style="font-size:12px;font-weight:500">3 Bulan</div><div style="font-size:10px;color:var(--color-text-secondary)">Rp 400.000</div></div>
+          <button class="btn btn-primary" style="font-size:10px;padding:3px 8px" onclick="startPayment('3 Bulan','400000')">Beli</button>
+        </div>
+      </div>
+      <div style="font-size:12px;font-weight:500;margin-bottom:5px">Riwayat Kunjungan</div>
+      <table class="tbl"><thead><tr><th>Tanggal</th><th>Status</th></tr></thead><tbody>
+        <tr><td>12 Jul</td><td><span class="badge bs">Masuk</span></td></tr>
+        <tr><td>11 Jul</td><td><span class="badge bs">Masuk</span></td></tr>
+        <tr><td>10 Jul</td><td><span class="badge bs">Masuk</span></td></tr>
+      </tbody></table>
+    </div>
+
+    <div id="cv-method" style="display:none">
+      <span class="nb" onclick="cvShow('cv-home')"><i class="ti ti-arrow-left"></i> Kembali</span>
+      <div style="font-size:13px;font-weight:500;margin-bottom:4px">Pilih Metode Bayar</div>
+      <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:.75rem">Paket <b id="pkg-name-m">—</b> · <b id="pkg-price-m">—</b></div>
+      <button class="pay-method-btn" onclick="selectMethod('qris')">
+        <i class="ti ti-qrcode" style="font-size:20px;color:#185FA5"></i>
+        <div><div style="font-size:12px;font-weight:500">QRIS (Scan QR)</div><div style="font-size:10px;color:var(--color-text-secondary)">GoPay, OVO, Dana, BCA, dll</div></div>
+      </button>
+      <button class="pay-method-btn" onclick="selectMethod('cash')">
+        <i class="ti ti-cash" style="font-size:20px;color:#3B6D11"></i>
+        <div><div style="font-size:12px;font-weight:500">Tunai via Kasir</div><div style="font-size:10px;color:var(--color-text-secondary)">Bayar langsung di meja kasir</div></div>
+      </button>
+      <button class="pay-method-btn" onclick="selectMethod('edc')">
+        <i class="ti ti-credit-card" style="font-size:20px;color:#854F0B"></i>
+        <div><div style="font-size:12px;font-weight:500">EDC / Kartu Debit-Kredit</div><div style="font-size:10px;color:var(--color-text-secondary)">Mesin kartu di kasir</div></div>
+      </button>
+    </div>
+
+    <div id="cv-qris" style="display:none">
+      <span class="nb" onclick="cvShow('cv-method')"><i class="ti ti-arrow-left"></i> Kembali</span>
+      <div style="font-size:12px;font-weight:500;margin-bottom:.5rem">Bayar dengan QRIS</div>
+      <div id="qris-steps">
+        <div class="step-indicator">
+          <div class="step-dot active" id="qs1">1</div><div class="step-line"></div>
+          <div class="step-dot pending" id="qs2">2</div><div class="step-line"></div>
+          <div class="step-dot pending" id="qs3">3</div>
+        </div>
+        <div id="qris-step-content">
+          <div id="qstep1">
+            <div style="font-size:11px;font-weight:500;margin-bottom:6px">Scan kode QRIS berikut</div>
+            <div class="qr-code">
+              <svg width="110" height="110" viewBox="0 0 110 110"><rect width="110" height="110" fill="#fff" rx="6"/><rect x="8" y="8" width="35" height="35" rx="2" fill="#185FA5"/><rect x="12" y="12" width="27" height="27" rx="1" fill="#fff"/><rect x="16" y="16" width="19" height="19" rx="1" fill="#185FA5"/><rect x="67" y="8" width="35" height="35" rx="2" fill="#185FA5"/><rect x="71" y="12" width="27" height="27" rx="1" fill="#fff"/><rect x="75" y="16" width="19" height="19" rx="1" fill="#185FA5"/><rect x="8" y="67" width="35" height="35" rx="2" fill="#185FA5"/><rect x="12" y="71" width="27" height="27" rx="1" fill="#fff"/><rect x="16" y="75" width="19" height="19" rx="1" fill="#185FA5"/><rect x="55" y="55" width="10" height="10" fill="#185FA5"/><rect x="70" y="55" width="8" height="8" fill="#185FA5"/><rect x="82" y="55" width="14" height="14" fill="#185FA5"/><rect x="55" y="70" width="8" height="22" fill="#185FA5"/><rect x="68" y="75" width="10" height="10" fill="#185FA5"/><rect x="82" y="70" width="14" height="8" fill="#185FA5"/><rect x="82" y="82" width="14" height="8" fill="#185FA5"/></svg>
+            </div>
+            <div style="font-size:10px;color:var(--color-text-secondary);text-align:center;margin-bottom:8px">ITSB GYM · <span id="pkg-name-qris">—</span> · <span id="pkg-price-qris">—</span></div>
+            <div class="timer-ring">
+              <div style="font-size:11px;color:var(--color-text-secondary)">Kode berlaku selama</div>
+              <div style="font-size:22px;font-weight:500;color:#185FA5" id="qr-timer">04:59</div>
+            </div>
+            <button class="btn btn-primary" style="width:100%;font-size:11px" onclick="qrisNextStep()">Simulasi: Sudah Scan di E-Wallet</button>
+          </div>
+          <div id="qstep2" style="display:none">
+            <div style="font-size:11px;font-weight:500;margin-bottom:6px">Menunggu konfirmasi pembayaran...</div>
+            <div style="text-align:center;padding:1rem 0">
+              <i class="ti ti-loader pulse" style="font-size:32px;color:#185FA5"></i>
+              <div style="font-size:11px;color:var(--color-text-secondary);margin-top:8px">Memverifikasi dari server bank...</div>
+            </div>
+          </div>
+          <div id="qstep3" style="display:none">
+            <div style="text-align:center;padding:.5rem 0">
+              <i class="ti ti-circle-check" style="font-size:40px;color:#3B6D11"></i>
+              <div style="font-size:13px;font-weight:500;margin-top:6px;color:#27500A">Pembayaran Berhasil!</div>
+              <div style="font-size:11px;color:var(--color-text-secondary);margin-top:4px">QR akses gym telah diperbarui</div>
+            </div>
+            <div class="card" style="margin:.75rem 0;padding:8px 10px">
+              <div style="font-size:10px;color:var(--color-text-secondary);margin-bottom:5px">Struk Digital</div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span>Paket</span><span id="struk-pkg">—</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span>Metode</span><span>QRIS</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span>Total</span><span id="struk-price">—</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:11px"><span>No. Ref</span><span style="font-family:var(--font-mono);font-size:10px">QR-<span id="struk-ref">—</span></span></div>
+            </div>
+            <button class="btn btn-success" style="width:100%;font-size:11px" onclick="cvShow('cv-home')">Lihat QR Akses Gym</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="cv-cash" style="display:none">
+      <span class="nb" onclick="cvShow('cv-method')"><i class="ti ti-arrow-left"></i> Kembali</span>
+      <div style="font-size:12px;font-weight:500;margin-bottom:.5rem">Bayar Tunai via Kasir</div>
+      <div class="step-indicator">
+        <div class="step-dot active" id="cs1">1</div><div class="step-line"></div>
+        <div class="step-dot pending" id="cs2">2</div><div class="step-line"></div>
+        <div class="step-dot pending" id="cs3">3</div>
+      </div>
+      <div id="cash-step1">
+        <div class="card" style="padding:10px;margin-bottom:8px;background:#EAF3DE;border-color:#C0DD97">
+          <div style="font-size:11px;font-weight:500;color:#27500A;margin-bottom:4px">Instruksi Pembayaran Tunai</div>
+          <div style="font-size:11px;color:#3B6D11;line-height:1.7">
+            1. Tunjukkan layar ini ke kasir<br>
+            2. Sebutkan paket yang dipilih<br>
+            3. Kasir akan menerima uang & konfirmasi di sistem
+          </div>
+        </div>
+        <div class="card" style="padding:8px 10px;margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span style="color:var(--color-text-secondary)">Paket</span><span id="cash-pkg">—</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:500"><span>Total Bayar</span><span id="cash-price">—</span></div>
+        </div>
+        <div style="font-size:11px;font-weight:500;margin-bottom:5px;color:var(--color-text-secondary)">Tunjukkan kode ini ke kasir:</div>
+        <div class="copy-code">
+          <span style="font-family:var(--font-mono);font-size:13px;font-weight:500;color:#185FA5" id="cash-code">TKT-7842</span>
+          <i class="ti ti-copy" style="font-size:15px;color:var(--color-text-secondary);cursor:pointer"></i>
+        </div>
+        <button class="btn btn-primary" style="width:100%;font-size:11px" onclick="cashNextStep()">Simulasi: Kasir Sudah Konfirmasi</button>
+      </div>
+      <div id="cash-step2" style="display:none">
+        <div style="text-align:center;padding:1rem 0">
+          <i class="ti ti-loader pulse" style="font-size:32px;color:#185FA5"></i>
+          <div style="font-size:11px;color:var(--color-text-secondary);margin-top:8px">Kasir sedang memproses...</div>
+        </div>
+      </div>
+      <div id="cash-step3" style="display:none">
+        <div style="text-align:center;padding:.5rem 0">
+          <i class="ti ti-circle-check" style="font-size:40px;color:#3B6D11"></i>
+          <div style="font-size:13px;font-weight:500;margin-top:6px;color:#27500A">Pembayaran Diterima!</div>
+          <div style="font-size:11px;color:var(--color-text-secondary);margin-top:3px">Struk fisik dicetak oleh kasir</div>
+        </div>
+        <div class="card" style="margin:.75rem 0;padding:8px 10px">
+          <div style="font-size:10px;color:var(--color-text-secondary);margin-bottom:5px">Struk Digital</div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span>Paket</span><span id="cash-struk-pkg">—</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span>Metode</span><span>Tunai</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px"><span>Total</span><span id="cash-struk-price">—</span></div>
+        </div>
+        <div style="font-size:10px;color:var(--color-text-secondary);text-align:center;margin-bottom:8px">QR akses gym diaktifkan otomatis</div>
+        <button class="btn btn-success" style="width:100%;font-size:11px" onclick="cvShow('cv-home')">Lihat QR Akses Gym</button>
+      </div>
+    </div>
+
+    <div id="cv-edc" style="display:none">
+      <span class="nb" onclick="cvShow('cv-method')"><i class="ti ti-arrow-left"></i> Kembali</span>
+      <div style="font-size:12px;font-weight:500;margin-bottom:.5rem">Bayar EDC / Kartu</div>
+      <div class="step-indicator">
+        <div class="step-dot active" id="es1">1</div><div class="step-line"></div>
+        <div class="step-dot pending" id="es2">2</div><div class="step-line"></div>
+        <div class="step-dot pending" id="es3">3</div>
+      </div>
+      <div id="edc-step1">
+        <div class="card" style="padding:10px;margin-bottom:8px;background:#FAEEDA;border-color:#FAC775">
+          <div style="font-size:11px;font-weight:500;color:#633806;margin-bottom:4px">Instruksi EDC / Kartu</div>
+          <div style="font-size:11px;color:#854F0B;line-height:1.7">
+            1. Datang ke meja kasir dengan kartu<br>
+            2. Kasir input nominal di mesin EDC<br>
+            3. Tap / gesek / masukkan PIN kartu<br>
+            4. Tunggu konfirmasi sistem
+          </div>
+        </div>
+        <div class="card" style="padding:8px 10px;margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:500"><span>Total EDC</span><span id="edc-price">—</span></div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;font-size:11px" onclick="edcNextStep()">Simulasi: Kartu Berhasil Di-tap</button>
+      </div>
+      <div id="edc-step2" style="display:none">
+        <div style="text-align:center;padding:1rem 0">
+          <i class="ti ti-loader pulse" style="font-size:32px;color:#185FA5"></i>
+          <div style="font-size:11px;color:var(--color-text-secondary);margin-top:8px">Memproses transaksi kartu...</div>
+        </div>
+      </div>
+      <div id="edc-step3" style="display:none">
+        <div style="text-align:center;padding:.5rem 0">
+          <i class="ti ti-circle-check" style="font-size:40px;color:#3B6D11"></i>
+          <div style="font-size:13px;font-weight:500;margin-top:6px;color:#27500A">Kartu Approved!</div>
+        </div>
+        <div class="card" style="margin:.75rem 0;padding:8px 10px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span>Total</span><span id="edc-struk-price">—</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px"><span>Auth Code</span><span style="font-family:var(--font-mono);font-size:10px">EDC-<span id="edc-ref">—</span></span></div>
+        </div>
+        <button class="btn btn-success" style="width:100%;font-size:11px" onclick="cvShow('cv-home')">Lihat QR Akses Gym</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<div id="s-kasir" class="screen">
+<div class="dl">
+  <div class="sidebar">
+    <div style="font-size:11px;font-weight:500;color:var(--color-text-secondary);padding:3px 10px;margin-bottom:3px">KASIR</div>
+    <div class="si active" onclick="kTab('k-pos',this)"><i class="ti ti-scan" aria-hidden="true"></i> POS Transaksi</div>
+    <div class="si" onclick="kTab('k-verify',this)"><i class="ti ti-qrcode" aria-hidden="true"></i> Verifikasi Akses</div>
+    <div class="si" onclick="kTab('k-member',this)"><i class="ti ti-users" aria-hidden="true"></i> Data Member</div>
+    <div style="margin-top:auto;padding-top:6px;border-top:0.5px solid var(--color-border-tertiary)">
+      <div style="font-size:10px;color:var(--color-text-secondary);padding:3px 10px">Kasir: Rina A.</div>
+      <div class="si" onclick="doLogout()"><i class="ti ti-logout" aria-hidden="true"></i> Keluar</div>
+    </div>
+  </div>
+  <div class="mc-area">
+    <div id="k-pos">
+      <div class="tb"><div style="font-size:14px;font-weight:500">POS — Transaksi</div><span class="badge bs">Shift Aktif</span></div>
+      <div class="g2">
+        <div>
+          <div style="font-size:12px;font-weight:500;margin-bottom:6px">Data Member</div>
+          <div class="ig"><label>Cari Member</label><input type="text" value="Budi Santoso"/></div>
+          <div class="card" style="margin-bottom:.75rem;padding:8px 10px">
+            <div style="font-size:12px;font-weight:500">Budi Santoso</div>
+            <div style="font-size:10px;color:var(--color-text-secondary)">MBR-0042 · Bulanan</div>
+            <div style="margin-top:4px"><span class="badge bs">Aktif</span><span style="font-size:10px;color:var(--color-text-secondary);margin-left:5px">s/d 30 Jul</span></div>
+          </div>
+          <div style="font-size:12px;font-weight:500;margin-bottom:5px">Paket</div>
+          <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:.75rem">
+            <label style="display:flex;align-items:center;gap:7px;font-size:12px;cursor:pointer"><input type="radio" name="kpkg"> Harian — Rp 15.000</label>
+            <label style="display:flex;align-items:center;gap:7px;font-size:12px;cursor:pointer"><input type="radio" name="kpkg" checked> Bulanan — Rp 150.000</label>
+            <label style="display:flex;align-items:center;gap:7px;font-size:12px;cursor:pointer"><input type="radio" name="kpkg"> 3 Bulan — Rp 400.000</label>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:500;margin-bottom:5px">Pembayaran</div>
+          <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:.75rem">
+            <label style="display:flex;align-items:center;gap:7px;font-size:12px;cursor:pointer"><input type="radio" name="kpay" checked> Tunai</label>
+            <label style="display:flex;align-items:center;gap:7px;font-size:12px;cursor:pointer"><input type="radio" name="kpay"> Non-Tunai / QRIS</label>
+            <label style="display:flex;align-items:center;gap:7px;font-size:12px;cursor:pointer"><input type="radio" name="kpay"> EDC Kartu</label>
+          </div>
+          <div class="card" style="margin-bottom:.75rem;padding:8px 10px">
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span>Paket Bulanan</span><span>Rp 150.000</span></div>
+            <div class="div" style="margin:.5rem 0"></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:500"><span>Total</span><span>Rp 150.000</span></div>
+          </div>
+          <button class="btn btn-primary" style="width:100%;margin-bottom:6px;font-size:12px" onclick="kasirOk()">Proses & Cetak Struk</button>
+          <div id="kasir-ok-msg" style="display:none;background:#EAF3DE;border-radius:var(--border-radius-md);padding:8px 10px;font-size:11px;color:#27500A"><i class="ti ti-circle-check" style="margin-right:4px"></i>Berhasil! Struk + QR dicetak. Data tersimpan.</div>
+        </div>
+      </div>
+      <div class="div"></div>
+      <div style="font-size:12px;font-weight:500;margin-bottom:6px">Transaksi Hari Ini</div>
+      <table class="tbl"><thead><tr><th>Waktu</th><th>Member</th><th>Paket</th><th>Metode</th><th>Total</th><th>Status</th></tr></thead><tbody>
+        <tr><td>09:12</td><td>Andi P.</td><td>Harian</td><td>Tunai</td><td>Rp 15K</td><td><span class="badge bs">OK</span></td></tr>
+        <tr><td>09:45</td><td>Sari W.</td><td>Bulanan</td><td>QRIS</td><td>Rp 150K</td><td><span class="badge bs">OK</span></td></tr>
+        <tr><td>10:03</td><td>Reza M.</td><td>3 Bln</td><td>EDC</td><td>Rp 400K</td><td><span class="badge bs">OK</span></td></tr>
+      </tbody></table>
+    </div>
+    <div id="k-verify" style="display:none">
+      <div class="tb"><div style="font-size:14px;font-weight:500">Verifikasi Akses QR</div></div>
+      <div class="g2">
+        <div class="card">
+          <div style="font-size:12px;font-weight:500;margin-bottom:6px">Scan / Input ID</div>
+          <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);height:90px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;font-size:11px;color:var(--color-text-secondary)">Area Scan QR</div>
+          <div class="ig"><label>ID Member</label><input type="text" placeholder="MBR-XXXX" value="MBR-0042"/></div>
+          <button class="btn btn-primary" style="width:100%;font-size:12px" onclick="showVerify()">Cek Status Akses</button>
+        </div>
+        <div id="verify-res" style="display:none" class="card" style="text-align:center">
+          <div style="text-align:center;padding:.75rem 0">
+            <i class="ti ti-circle-check" style="font-size:36px;color:#3B6D11"></i>
+            <div style="font-size:13px;font-weight:500;margin-top:6px;color:#27500A">Akses Diterima</div>
+            <div class="div"></div>
+            <div style="font-size:12px;font-weight:500">Budi Santoso</div>
+            <div style="font-size:10px;color:var(--color-text-secondary)">MBR-0042 · Bulanan · 18 hari</div>
+            <div style="margin-top:6px"><span class="badge bs">Aktif</span></div>
+            <div style="font-size:10px;color:var(--color-text-secondary);margin-top:6px">Kunjungan ke-25</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="k-member" style="display:none">
+      <div class="tb"><div style="font-size:14px;font-weight:500">Data Member</div><button class="btn btn-primary" style="font-size:11px">+ Daftar Baru</button></div>
+      <table class="tbl"><thead><tr><th>ID</th><th>Nama</th><th>Paket</th><th>Berlaku</th><th>Status</th></tr></thead><tbody>
+        <tr><td>MBR-0042</td><td>Budi S.</td><td>Bulanan</td><td>30 Jul</td><td><span class="badge bs">Aktif</span></td></tr>
+        <tr><td>MBR-0041</td><td>Andi P.</td><td>Harian</td><td>12 Jul</td><td><span class="badge bw">Expired</span></td></tr>
+        <tr><td>MBR-0040</td><td>Sari W.</td><td>3 Bulan</td><td>15 Sep</td><td><span class="badge bs">Aktif</span></td></tr>
+        <tr><td>MBR-0088</td><td>???</td><td>Harian</td><td>12 Jul</td><td><span class="badge bd">Diblokir</span></td></tr>
+      </tbody></table>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="s-admin" class="screen">
+<div class="dl">
+  <div class="sidebar">
+    <div style="font-size:11px;font-weight:500;color:var(--color-text-secondary);padding:3px 10px;margin-bottom:3px">ADMIN SERVER</div>
+    <div class="si active" onclick="aTab('a-mon',this)"><i class="ti ti-activity" aria-hidden="true"></i> Monitor Akses</div>
+    <div class="si" onclick="aTab('a-anomaly',this)"><i class="ti ti-shield-exclamation" aria-hidden="true"></i> Uji Anomali IF</div>
+    <div class="si" onclick="aTab('a-trx',this)"><i class="ti ti-report-money" aria-hidden="true"></i> Rekap Transaksi</div>
+    <div class="si" onclick="aTab('a-db',this)"><i class="ti ti-database" aria-hidden="true"></i> Manajemen DB</div>
+    <div style="margin-top:auto;padding-top:6px;border-top:0.5px solid var(--color-border-tertiary)">
+      <div class="si" onclick="doLogout()"><i class="ti ti-logout" aria-hidden="true"></i> Keluar</div>
+    </div>
+  </div>
+  <div class="mc-area">
+    <div id="a-mon">
+      <div class="tb"><div style="font-size:14px;font-weight:500">Monitor Akses Real-time</div><span class="badge bs pulse">● Live</span></div>
+      <div id="a-alert" class="alert">
+        <i class="ti ti-alert-triangle" style="color:#791F1F;font-size:18px;flex-shrink:0"></i>
+        <div><div class="alert-t">Anomali Terdeteksi — Isolation Forest</div><div class="alert-s">MBR-0088: 11x akses dalam 2 jam (skor: 0.91). <span style="text-decoration:underline;cursor:pointer" onclick="aTab('a-anomaly',null)">Lihat detail</span></div></div>
+      </div>
+      <div class="g4">
+        <div class="mc"><div class="mc-l">Pengunjung Hari Ini</div><div class="mc-v">47</div></div>
+        <div class="mc"><div class="mc-l">Sedang di Gym</div><div class="mc-v">12</div></div>
+        <div class="mc"><div class="mc-l">Akses Ditolak</div><div class="mc-v" style="color:#A32D2D">2</div></div>
+        <div class="mc"><div class="mc-l">QR Aktif</div><div class="mc-v">38</div></div>
+      </div>
+      <table class="tbl"><thead><tr><th>Waktu</th><th>Member</th><th>Gate</th><th>Status</th><th>Skor IF</th></tr></thead><tbody>
+        <tr><td>10:47</td><td>Budi S. (0042)</td><td>Gate-A</td><td><span class="badge bs">Masuk</span></td><td style="color:#3B6D11;font-size:11px">Normal (0.12)</td></tr>
+        <tr><td>10:45</td><td>MBR-0088</td><td>Gate-A</td><td><span class="badge bd">Tolak</span></td><td style="color:#A32D2D;font-size:11px;font-weight:500">Anomali (0.91)</td></tr>
+        <tr><td>10:43</td><td>Sari W. (0040)</td><td>Gate-B</td><td><span class="badge bs">Masuk</span></td><td style="color:#3B6D11;font-size:11px">Normal (0.08)</td></tr>
+        <tr><td>10:31</td><td>MBR-0088</td><td>Gate-B</td><td><span class="badge bd">Tolak</span></td><td style="color:#A32D2D;font-size:11px;font-weight:500">Anomali (0.89)</td></tr>
+      </tbody></table>
+    </div>
+
+    <div id="a-anomaly" style="display:none">
+      <div class="tb"><div style="font-size:14px;font-weight:500">Uji & Simulasi Isolation Forest</div><span class="badge bd" id="anomaly-count-badge">2 anomali</span></div>
+      <div class="card" style="margin-bottom:.75rem;background:var(--color-background-secondary)">
+        <div style="font-size:12px;font-weight:500;margin-bottom:5px">Cara kerja Isolation Forest</div>
+        <div style="font-size:11px;color:var(--color-text-secondary);line-height:1.7">Model membangun pohon isolasi dari fitur kunjungan (frekuensi/jam, jumlah akses/hari, jumlah gate berbeda). Data yang mudah diisolasi = anomali. Skor <b style="color:#A32D2D">≥ 0.70</b> = anomali, alert otomatis ke Admin & Owner.</div>
+      </div>
+
+      <div class="card" style="margin-bottom:.75rem">
+        <div style="font-size:12px;font-weight:500;margin-bottom:.75rem">Simulator Fitur Member — Uji Skor Anomali</div>
+        <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:10px">Geser slider untuk mensimulasikan pola kunjungan, sistem akan menghitung skor Isolation Forest secara real-time.</div>
+        <div class="anomaly-slider-wrap">
+          <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><label>Jumlah akses hari ini</label><span id="sl1-val" style="font-weight:500;color:#185FA5">3x</span></div>
+          <input type="range" min="1" max="20" value="3" step="1" id="sl1" oninput="calcAnomaly()" style="width:100%">
+        </div>
+        <div class="anomaly-slider-wrap">
+          <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><label>Jumlah gate berbeda diakses</label><span id="sl2-val" style="font-weight:500;color:#185FA5">1 gate</span></div>
+          <input type="range" min="1" max="4" value="1" step="1" id="sl2" oninput="calcAnomaly()" style="width:100%">
+        </div>
+        <div class="anomaly-slider-wrap">
+          <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><label>Kecepatan akses (menit antar scan)</label><span id="sl3-val" style="font-weight:500;color:#185FA5">60 mnt</span></div>
+          <input type="range" min="1" max="120" value="60" step="1" id="sl3" oninput="calcAnomaly()" style="width:100%">
+        </div>
+        <div style="margin-top:.75rem;padding:10px 12px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary)" id="if-result-box">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+            <span style="font-size:12px;font-weight:500">Skor Isolation Forest</span>
+            <span style="font-size:20px;font-weight:500" id="if-score">0.12</span>
+          </div>
+          <div class="sc-bar"><div class="sc-fill" id="if-bar" style="width:12%;background:#639922"></div></div>
+          <div style="margin-top:8px;font-size:11px;font-weight:500" id="if-verdict"><span class="badge bs">Normal — tidak ada anomali</span></div>
+          <div style="font-size:10px;color:var(--color-text-secondary);margin-top:5px" id="if-reason">Pola kunjungan dalam batas wajar.</div>
+        </div>
+        <div id="if-alert-sim" style="display:none;margin-top:.75rem" class="alert">
+          <i class="ti ti-alert-triangle" style="color:#791F1F;font-size:16px;flex-shrink:0"></i>
+          <div><div class="alert-t">Alert terkirim ke Owner Dashboard</div><div class="alert-s">Sistem mendeteksi penyalahgunaan membership. Member diblokir sementara.</div></div>
+        </div>
+      </div>
+
+      <div style="font-size:12px;font-weight:500;margin-bottom:6px">Akun Terdeteksi Anomali</div>
+      <div id="anomaly-list">
+        <div class="anomaly-item flagged">
+          <i class="ti ti-alert-triangle" style="color:#A32D2D;font-size:16px;flex-shrink:0"></i>
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:500">MBR-0088 — Pola multi-akses cepat</div>
+            <div style="font-size:10px;color:var(--color-text-secondary)">11 akses / 2 jam · 3 gate berbeda · interval 5 mnt</div>
+            <div class="sc-bar" style="margin-top:5px"><div class="sc-fill" style="width:91%;background:#E24B4A"></div></div>
+            <div style="font-size:10px;margin-top:3px;color:#A32D2D;font-weight:500">Skor: 0.91 — Anomali Tinggi</div>
+          </div>
+          <button class="btn btn-danger" style="font-size:10px;padding:3px 7px" onclick="blockMember('MBR-0088')">Blokir</button>
+        </div>
+        <div class="anomaly-item flagged" style="margin-top:6px">
+          <i class="ti ti-alert-triangle" style="color:#A32D2D;font-size:16px;flex-shrink:0"></i>
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:500">MBR-0077 — Perpindahan gate tidak wajar</div>
+            <div style="font-size:10px;color:var(--color-text-secondary)">4 gate berbeda · 8 akses / hari</div>
+            <div class="sc-bar" style="margin-top:5px"><div class="sc-fill" style="width:84%;background:#E24B4A"></div></div>
+            <div style="font-size:10px;margin-top:3px;color:#A32D2D;font-weight:500">Skor: 0.84 — Anomali Tinggi</div>
+          </div>
+          <button class="btn btn-danger" style="font-size:10px;padding:3px 7px" onclick="blockMember('MBR-0077')">Blokir</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="a-trx" style="display:none">
+      <div class="tb"><div style="font-size:14px;font-weight:500">Rekap Transaksi Digital</div></div>
+      <div class="g3">
+        <div class="mc"><div class="mc-l">Total Hari Ini</div><div class="mc-v">Rp 565K</div></div>
+        <div class="mc"><div class="mc-l">Tunai</div><div class="mc-v">Rp 215K</div></div>
+        <div class="mc"><div class="mc-l">Non-Tunai</div><div class="mc-v">Rp 350K</div></div>
+      </div>
+      <table class="tbl"><thead><tr><th>ID</th><th>Member</th><th>Paket</th><th>Metode</th><th>Total</th><th>Waktu</th></tr></thead><tbody>
+        <tr><td style="font-family:var(--font-mono);font-size:10px">TRX-001</td><td>Andi P.</td><td>Harian</td><td>Tunai</td><td>Rp 15K</td><td>09:12</td></tr>
+        <tr><td style="font-family:var(--font-mono);font-size:10px">TRX-002</td><td>Sari W.</td><td>Bulanan</td><td>QRIS</td><td>Rp 150K</td><td>09:45</td></tr>
+        <tr><td style="font-family:var(--font-mono);font-size:10px">TRX-003</td><td>Reza M.</td><td>3 Bulan</td><td>EDC</td><td>Rp 400K</td><td>10:03</td></tr>
+      </tbody></table>
+    </div>
+    <div id="a-db" style="display:none">
+      <div class="tb"><div style="font-size:14px;font-weight:500">Manajemen Database</div></div>
+      <div class="g3">
+        <div class="mc"><div class="mc-l">Total Akun</div><div class="mc-v">142</div></div>
+        <div class="mc"><div class="mc-l">Member Aktif</div><div class="mc-v">98</div></div>
+        <div class="mc"><div class="mc-l">DB Size</div><div class="mc-v">2.4 GB</div></div>
+      </div>
+      <div class="card">
+        <div style="font-size:12px;font-weight:500;margin-bottom:8px">Status Server</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span class="badge bs">● DB Cloud: Online</span>
+          <span class="badge bs">● API: OK</span>
+          <span class="badge bs">● Gate Scanner: Terhubung</span>
+          <span class="badge bw">● Backup: 6 jam lalu</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="s-owner" class="screen">
+<div class="dl">
+  <div class="sidebar">
+    <div style="font-size:11px;font-weight:500;color:var(--color-text-secondary);padding:3px 10px;margin-bottom:3px">OWNER</div>
+    <div class="si active" onclick="oTab('o-dash',this)"><i class="ti ti-layout-dashboard" aria-hidden="true"></i> Executive Dashboard</div>
+    <div class="si" onclick="oTab('o-kpi',this)"><i class="ti ti-trending-up" aria-hidden="true"></i> KPI & Target</div>
+    <div class="si" onclick="oTab('o-analysis',this)"><i class="ti ti-chart-bar" aria-hidden="true"></i> Analisis Bisnis</div>
+    <div class="si" onclick="oTab('o-lap',this)"><i class="ti ti-file-report" aria-hidden="true"></i> Laporan Final</div>
+    <div style="margin-top:auto;padding-top:6px;border-top:0.5px solid var(--color-border-tertiary)">
+      <div style="font-size:10px;color:var(--color-text-secondary);padding:3px 10px">Owner: Pak Hendra</div>
+      <div class="si" onclick="doLogout()"><i class="ti ti-logout" aria-hidden="true"></i> Keluar</div>
+    </div>
+  </div>
+  <div class="mc-area">
+    <div id="o-dash">
+      <div class="tb"><div style="font-size:14px;font-weight:500">Executive Dashboard — Juli 2025</div><span class="badge bi">DSS Aktif</span></div>
+      <div id="owner-alert" class="alert">
+        <i class="ti ti-shield-exclamation" style="color:#791F1F;font-size:16px;flex-shrink:0"></i>
+        <div><div class="alert-t">Anomali Isolation Forest — <span id="owner-anomaly-count">2</span> kasus aktif</div><div class="alert-s">Potensi penyalahgunaan membership terdeteksi. Admin Server sedang menangani.</div></div>
+      </div>
+      <div class="g4">
+        <div class="mc"><div class="mc-l">Pendapatan Bulan Ini</div><div class="mc-v" style="font-size:16px">Rp 18.2M</div><div class="mc-s" style="color:#27500A">↑ 12%</div></div>
+        <div class="mc"><div class="mc-l">Member Aktif</div><div class="mc-v" style="font-size:16px">98</div><div class="mc-s" style="color:#27500A">↑ 8 baru</div></div>
+        <div class="mc"><div class="mc-l">Rata Kunjungan/Hari</div><div class="mc-v" style="font-size:16px">43</div><div class="mc-s">Peak: Sel–Kam</div></div>
+        <div class="mc"><div class="mc-l">Churn Rate</div><div class="mc-v" style="font-size:16px;color:#A32D2D">6.2%</div><div class="mc-s" style="color:#A32D2D">↑ target 5%</div></div>
+      </div>
+      <div class="g2">
+        <div class="card">
+          <div style="font-size:12px;font-weight:500;margin-bottom:6px">Pendapatan 6 Bulan</div>
+          <div style="display:flex;align-items:flex-end;gap:3px;height:70px">
+            <div style="flex:1;background:#B5D4F4;border-radius:2px 2px 0 0;height:55%"></div>
+            <div style="flex:1;background:#B5D4F4;border-radius:2px 2px 0 0;height:62%"></div>
+            <div style="flex:1;background:#B5D4F4;border-radius:2px 2px 0 0;height:48%"></div>
+            <div style="flex:1;background:#B5D4F4;border-radius:2px 2px 0 0;height:70%"></div>
+            <div style="flex:1;background:#B5D4F4;border-radius:2px 2px 0 0;height:65%"></div>
+            <div style="flex:1;background:#378ADD;border-radius:2px 2px 0 0;height:85%"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--color-text-secondary);margin-top:3px"><span>Feb</span><span>Mar</span><span>Apr</span><span>Mei</span><span>Jun</span><span style="color:#185FA5">Jul</span></div>
+        </div>
+        <div class="card">
+          <div style="font-size:12px;font-weight:500;margin-bottom:6px">Distribusi Paket</div>
+          <div style="display:flex;gap:6px;align-items:center;margin-top:4px">
+            <svg width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="30" r="24" fill="none" stroke="#B5D4F4" stroke-width="12" stroke-dasharray="75 75" stroke-dashoffset="0"/><circle cx="30" cy="30" r="24" fill="none" stroke="#378ADD" stroke-width="12" stroke-dasharray="53 97" stroke-dashoffset="-75"/><circle cx="30" cy="30" r="24" fill="none" stroke="#C0DD97" stroke-width="12" stroke-dasharray="22 128" stroke-dashoffset="-128"/></svg>
+            <div style="font-size:10px;line-height:2">
+              <div><span style="color:#185FA5">■</span> Bulanan 50%</div>
+              <div><span style="color:#378ADD">■</span> Harian 35%</div>
+              <div><span style="color:#639922">■</span> 3 Bln 15%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="o-kpi" style="display:none">
+      <div class="tb"><div style="font-size:14px;font-weight:500">KPI & Target Bisnis</div></div>
+      <table class="tbl"><thead><tr><th>KPI</th><th>Target</th><th>Realisasi</th><th>Status</th><th>Trend</th></tr></thead><tbody>
+        <tr><td>Pendapatan</td><td>Rp 16M</td><td>Rp 18.2M</td><td><span class="badge bs">Tercapai</span></td><td style="color:#27500A">↑ 12%</td></tr>
+        <tr><td>Member Aktif</td><td>90</td><td>98</td><td><span class="badge bs">Tercapai</span></td><td style="color:#27500A">↑ 8.8%</td></tr>
+        <tr><td>Kunjungan/Hari</td><td>50</td><td>43</td><td><span class="badge bw">Kurang</span></td><td style="color:#854F0B">↓ 14%</td></tr>
+        <tr><td>Churn Rate</td><td>&lt;5%</td><td>6.2%</td><td><span class="badge bd">Perhatian</span></td><td style="color:#791F1F">↑ 1.2%</td></tr>
+        <tr><td>Member Baru/Bln</td><td>15</td><td>8</td><td><span class="badge bd">Kurang</span></td><td style="color:#791F1F">↓ 47%</td></tr>
+        <tr><td>Anomali IF</td><td>0</td><td id="kpi-anomaly">2</td><td><span class="badge bd">Tindakan</span></td><td style="color:#791F1F">—</td></tr>
+      </tbody></table>
+      <div class="card" style="margin-top:.75rem;background:var(--color-background-secondary)">
+        <div style="font-size:11px;font-weight:500;margin-bottom:5px">Rekomendasi DSS</div>
+        <div style="font-size:11px;color:var(--color-text-secondary);line-height:1.8">
+          • Churn 6.2% &gt; target. Program retensi / diskon perpanjangan.<br>
+          • Kunjungan weekday rendah — promo jam off-peak 10.00–14.00.<br>
+          • Akuisisi member baru perlu ditingkatkan (8 vs target 15).
+        </div>
+      </div>
+    </div>
+    <div id="o-analysis" style="display:none">
+      <div class="tb"><div style="font-size:14px;font-weight:500">Analisis Bisnis</div></div>
+      <div id="owner-alert2" class="alert">
+        <i class="ti ti-shield-exclamation" style="color:#791F1F;font-size:16px;flex-shrink:0"></i>
+        <div><div class="alert-t">Isolation Forest — <span id="owner-anomaly-count2">2</span> anomali aktif bulan ini</div><div class="alert-s">Potensi fraud membership. Admin Server menangani pemblokiran.</div></div>
+      </div>
+      <div class="g2" style="margin-bottom:.75rem">
+        <div class="card">
+          <div style="font-size:12px;font-weight:500;margin-bottom:5px">Kunjungan per Hari</div>
+          <div style="display:flex;align-items:flex-end;gap:3px;height:55px">
+            <div style="flex:1;background:#B5D4F4;border-radius:2px 2px 0 0;height:40%"></div>
+            <div style="flex:1;background:#378ADD;border-radius:2px 2px 0 0;height:85%"></div>
+            <div style="flex:1;background:#378ADD;border-radius:2px 2px 0 0;height:90%"></div>
+            <div style="flex:1;background:#378ADD;border-radius:2px 2px 0 0;height:95%"></div>
+            <div style="flex:1;background:#B5D4F4;border-radius:2px 2px 0 0;height:80%"></div>
+            <div style="flex:1;background:#B5D4F4;border-radius:2px 2px 0 0;height:35%"></div>
+            <div style="flex:1;background:#B5D4F4;border-radius:2px 2px 0 0;height:25%"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--color-text-secondary);margin-top:3px"><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span></div>
+        </div>
+        <div class="card">
+          <div style="font-size:12px;font-weight:500;margin-bottom:5px">Normal vs Anomali (IF)</div>
+          <div style="display:flex;align-items:flex-end;gap:3px;height:55px">
+            <div style="flex:1;background:#C0DD97;border-radius:2px 2px 0 0;height:30%"></div>
+            <div style="flex:1;background:#C0DD97;border-radius:2px 2px 0 0;height:45%"></div>
+            <div style="flex:1;background:#F09595;border-radius:2px 2px 0 0;height:90%"></div>
+            <div style="flex:1;background:#C0DD97;border-radius:2px 2px 0 0;height:50%"></div>
+            <div style="flex:1;background:#C0DD97;border-radius:2px 2px 0 0;height:35%"></div>
+            <div style="flex:1;background:#F09595;border-radius:2px 2px 0 0;height:80%"></div>
+            <div style="flex:1;background:#C0DD97;border-radius:2px 2px 0 0;height:40%"></div>
+          </div>
+          <div style="font-size:10px;margin-top:4px;display:flex;gap:8px"><span><span style="color:#639922">■</span> Normal</span><span><span style="color:#E24B4A">■</span> Anomali</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-size:12px;font-weight:500;margin-bottom:6px">Segmentasi Member (RFM)</div>
+        <table class="tbl"><thead><tr><th>Segmen</th><th>Jumlah</th><th>Revenue</th><th>Rekomendasi</th></tr></thead><tbody>
+          <tr><td><span class="badge bs">Champions</span></td><td>22</td><td>45%</td><td>Reward & loyalty</td></tr>
+          <tr><td><span class="badge bi">Loyal</span></td><td>35</td><td>38%</td><td>Upsell 3 bulan</td></tr>
+          <tr><td><span class="badge bw">At Risk</span></td><td>28</td><td>14%</td><td>Promo retensi</td></tr>
+          <tr><td><span class="badge bd">Churned</span></td><td>13</td><td>3%</td><td>Reaktivasi</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+    <div id="o-lap" style="display:none">
+      <div class="tb"><div style="font-size:14px;font-weight:500">Laporan Keuangan Final</div></div>
+      <div class="g3">
+        <div class="mc"><div class="mc-l">Total Pendapatan</div><div class="mc-v">Rp 18.2M</div></div>
+        <div class="mc"><div class="mc-l">Biaya Operasional</div><div class="mc-v">Rp 7.4M</div></div>
+        <div class="mc"><div class="mc-l" >Profit Bersih</div><div class="mc-v" style="color:#27500A">Rp 10.8M</div></div>
+      </div>
+      <div class="card">
+        <div style="font-size:12px;font-weight:500;margin-bottom:8px">Laporan 3 Arah — Juli 2025</div>
+        <table class="tbl"><thead><tr><th>Kategori</th><th>Tunai</th><th>Non-Tunai</th><th>Total</th></tr></thead><tbody>
+          <tr><td>Harian</td><td>Rp 1.2M</td><td>Rp 0.8M</td><td>Rp 2.0M</td></tr>
+          <tr><td>Bulanan</td><td>Rp 4.5M</td><td>Rp 5.7M</td><td>Rp 10.2M</td></tr>
+          <tr><td>3 Bulan</td><td>Rp 2.0M</td><td>Rp 4.0M</td><td>Rp 6.0M</td></tr>
+          <tr style="font-weight:500"><td>Total</td><td>Rp 7.7M</td><td>Rp 10.5M</td><td>Rp 18.2M</td></tr>
+        </tbody></table>
+      </div>
+      <button class="btn btn-primary" style="margin-top:.75rem;font-size:12px"><i class="ti ti-download" aria-hidden="true"></i> Export PDF</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+const ACCS={'client@gym.id':{p:'1234',r:'client'},'kasir@gym.id':{p:'1234',r:'kasir'},'admin@gym.id':{p:'1234',r:'admin'},'owner@gym.id':{p:'1234',r:'owner'}};
+let anomalyCount=2;
+let qrisTimer=null;
+let selectedPkg='',selectedPrice='';
+
+function gS(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function doLogin(){
+  const u=document.getElementById('lu').value.trim().toLowerCase(),p=document.getElementById('lp').value;
+  const err=document.getElementById('lerr'),acc=ACCS[u];
+  if(acc&&acc.p===p){err.style.display='none';gS('s-'+acc.r);}
+  else{err.style.display='block';}
+}
+function doLogout(){gS('s-login');document.getElementById('lu').value='';document.getElementById('lp').value='';}
+document.getElementById('lp').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+
+function cvShow(id){document.querySelectorAll('[id^="cv-"]').forEach(v=>v.style.display='none');document.getElementById(id).style.display='block';}
+
+function startPayment(pkg,price){
+  selectedPkg=pkg;selectedPrice=price;
+  document.getElementById('pkg-name-m').textContent=pkg;
+  document.getElementById('pkg-price-m').textContent='Rp '+parseInt(price).toLocaleString('id-ID');
+  cvShow('cv-method');
+}
+function selectMethod(m){
+  if(m==='qris'){
+    document.getElementById('pkg-name-qris').textContent=selectedPkg;
+    document.getElementById('pkg-price-qris').textContent='Rp '+parseInt(selectedPrice).toLocaleString('id-ID');
+    document.getElementById('struk-pkg').textContent=selectedPkg;
+    document.getElementById('struk-price').textContent='Rp '+parseInt(selectedPrice).toLocaleString('id-ID');
+    document.getElementById('struk-ref').textContent=Math.floor(Math.random()*90000+10000);
+    resetQrisSteps();
+    cvShow('cv-qris');
+    startQrisTimer();
+  } else if(m==='cash'){
+    document.getElementById('cash-pkg').textContent=selectedPkg;
+    document.getElementById('cash-price').textContent='Rp '+parseInt(selectedPrice).toLocaleString('id-ID');
+    document.getElementById('cash-struk-pkg').textContent=selectedPkg;
+    document.getElementById('cash-struk-price').textContent='Rp '+parseInt(selectedPrice).toLocaleString('id-ID');
+    resetCashSteps();
+    cvShow('cv-cash');
+  } else {
+    document.getElementById('edc-price').textContent='Rp '+parseInt(selectedPrice).toLocaleString('id-ID');
+    document.getElementById('edc-struk-price').textContent='Rp '+parseInt(selectedPrice).toLocaleString('id-ID');
+    document.getElementById('edc-ref').textContent=Math.floor(Math.random()*90000+10000);
+    resetEdcSteps();
+    cvShow('cv-edc');
+  }
+}
+
+function resetQrisSteps(){
+  ['qstep1','qstep2','qstep3'].forEach((s,i)=>document.getElementById(s).style.display=i===0?'block':'none');
+  ['qs1','qs2','qs3'].forEach((s,i)=>{const el=document.getElementById(s);el.className='step-dot '+(i===0?'active':'pending');});
+  let secs=299;document.getElementById('qr-timer').textContent='04:59';
+}
+function startQrisTimer(){
+  if(qrisTimer)clearInterval(qrisTimer);
+  let secs=299;
+  qrisTimer=setInterval(()=>{
+    secs--;
+    const m=Math.floor(secs/60),s=secs%60;
+    const el=document.getElementById('qr-timer');
+    if(el)el.textContent=m+':'+(s<10?'0':'')+s;
+    if(secs<=0)clearInterval(qrisTimer);
+  },1000);
+}
+function qrisNextStep(){
+  clearInterval(qrisTimer);
+  document.getElementById('qstep1').style.display='none';
+  document.getElementById('qstep2').style.display='block';
+  document.getElementById('qs1').className='step-dot done';
+  document.getElementById('qs2').className='step-dot active';
+  setTimeout(()=>{
+    document.getElementById('qstep2').style.display='none';
+    document.getElementById('qstep3').style.display='block';
+    document.getElementById('qs2').className='step-dot done';
+    document.getElementById('qs3').className='step-dot active';
+  },1800);
+}
+function resetCashSteps(){
+  ['cash-step1','cash-step2','cash-step3'].forEach((s,i)=>document.getElementById(s).style.display=i===0?'block':'none');
+  ['cs1','cs2','cs3'].forEach((s,i)=>{document.getElementById(s).className='step-dot '+(i===0?'active':'pending');});
+}
+function cashNextStep(){
+  document.getElementById('cash-step1').style.display='none';
+  document.getElementById('cash-step2').style.display='block';
+  document.getElementById('cs1').className='step-dot done';
+  document.getElementById('cs2').className='step-dot active';
+  setTimeout(()=>{
+    document.getElementById('cash-step2').style.display='none';
+    document.getElementById('cash-step3').style.display='block';
+    document.getElementById('cs2').className='step-dot done';
+    document.getElementById('cs3').className='step-dot active';
+  },1800);
+}
+function resetEdcSteps(){
+  ['edc-step1','edc-step2','edc-step3'].forEach((s,i)=>document.getElementById(s).style.display=i===0?'block':'none');
+  ['es1','es2','es3'].forEach((s,i)=>{document.getElementById(s).className='step-dot '+(i===0?'active':'pending');});
+}
+function edcNextStep(){
+  document.getElementById('edc-step1').style.display='none';
+  document.getElementById('edc-step2').style.display='block';
+  document.getElementById('es1').className='step-dot done';
+  document.getElementById('es2').className='step-dot active';
+  setTimeout(()=>{
+    document.getElementById('edc-step2').style.display='none';
+    document.getElementById('edc-step3').style.display='block';
+    document.getElementById('es2').className='step-dot done';
+    document.getElementById('es3').className='step-dot active';
+  },1800);
+}
+
+function kTab(id,el){
+  ['k-pos','k-verify','k-member'].forEach(t=>document.getElementById(t).style.display='none');
+  document.getElementById(id).style.display='block';
+  document.querySelectorAll('#s-kasir .si').forEach(i=>i.classList.remove('active'));
+  if(el)el.classList.add('active');
+}
+function aTab(id,el){
+  ['a-mon','a-anomaly','a-trx','a-db'].forEach(t=>document.getElementById(t).style.display='none');
+  document.getElementById(id).style.display='block';
+  document.querySelectorAll('#s-admin .si').forEach(i=>i.classList.remove('active'));
+  if(el)el.classList.add('active');
+}
+function oTab(id,el){
+  ['o-dash','o-kpi','o-analysis','o-lap'].forEach(t=>document.getElementById(t).style.display='none');
+  document.getElementById(id).style.display='block';
+  document.querySelectorAll('#s-owner .si').forEach(i=>i.classList.remove('active'));
+  if(el)el.classList.add('active');
+}
+
+function kasirOk(){
+  const el=document.getElementById('kasir-ok-msg');
+  el.style.display='block';
+  setTimeout(()=>el.style.display='none',3000);
+}
+function showVerify(){document.getElementById('verify-res').style.display='block';}
+
+function calcAnomaly(){
+  const freq=parseInt(document.getElementById('sl1').value);
+  const gates=parseInt(document.getElementById('sl2').value);
+  const interval=parseInt(document.getElementById('sl3').value);
+  document.getElementById('sl1-val').textContent=freq+'x';
+  document.getElementById('sl2-val').textContent=gates+' gate'+(gates>1?'s':'');
+  document.getElementById('sl3-val').textContent=interval+' mnt';
+  let score=0;
+  if(freq>5) score+=((freq-5)/15)*0.5;
+  if(gates>1) score+=(gates-1)*0.15;
+  if(interval<15) score+=(1-interval/15)*0.3;
+  score=Math.min(score,0.99);
+  score=Math.round(score*100)/100;
+  const pct=Math.round(score*100);
+  document.getElementById('if-score').textContent=score.toFixed(2);
+  const bar=document.getElementById('if-bar');
+  bar.style.width=pct+'%';
+  const alertSim=document.getElementById('if-alert-sim');
+  const verdict=document.getElementById('if-verdict');
+  const reason=document.getElementById('if-reason');
+  const box=document.getElementById('if-result-box');
+  if(score>=0.70){
+    bar.style.background='#E24B4A';
+    verdict.innerHTML='<span class="badge bd">Anomali Terdeteksi — Alert dikirim!</span>';
+    reason.textContent='Pola tidak wajar: frekuensi akses '+freq+'x, '+gates+' gate, interval '+interval+' mnt.';
+    alertSim.style.display='flex';
+    box.style.borderColor='#F09595';
+    updateOwnerAlert(true);
+  } else if(score>=0.45){
+    bar.style.background='#EF9F27';
+    verdict.innerHTML='<span class="badge bw">Mencurigakan — Pantau lebih lanjut</span>';
+    reason.textContent='Pola sedikit tidak wajar, belum mencapai threshold anomali.';
+    alertSim.style.display='none';
+    box.style.borderColor='#FAC775';
+    updateOwnerAlert(false);
+  } else {
+    bar.style.background='#639922';
+    verdict.innerHTML='<span class="badge bs">Normal — tidak ada anomali</span>';
+    reason.textContent='Pola kunjungan dalam batas wajar.';
+    alertSim.style.display='none';
+    box.style.borderColor='var(--color-border-secondary)';
+    updateOwnerAlert(false);
+  }
+}
+function updateOwnerAlert(show){
+  const a=document.getElementById('owner-alert');
+  const a2=document.getElementById('owner-alert2');
+  if(show){
+    if(a){a.style.display='flex';}
+    if(a2){a2.style.display='flex';}
+  }
+}
+function blockMember(id){
+  const items=document.querySelectorAll('.anomaly-item.flagged');
+  items.forEach(item=>{
+    if(item.textContent.includes(id)){
+      item.classList.remove('flagged');
+      item.style.opacity='0.5';
+      const btn=item.querySelector('button');
+      if(btn){btn.textContent='Diblokir';btn.disabled=true;btn.style.opacity='0.5';}
+      anomalyCount=Math.max(0,anomalyCount-1);
+      const badge=document.getElementById('anomaly-count-badge');
+      if(badge)badge.textContent=anomalyCount+' anomali';
+      const oc=document.getElementById('owner-anomaly-count');
+      if(oc)oc.textContent=anomalyCount;
+      const oc2=document.getElementById('owner-anomaly-count2');
+      if(oc2)oc2.textContent=anomalyCount;
+      const kpi=document.getElementById('kpi-anomaly');
+      if(kpi)kpi.textContent=anomalyCount;
+      if(anomalyCount===0){
+        const oa=document.getElementById('owner-alert');
+        if(oa)oa.style.display='none';
+        const oa2=document.getElementById('owner-alert2');
+        if(oa2)oa2.style.display='none';
+        const aa=document.getElementById('a-alert');
+        if(aa)aa.style.display='none';
+      }
+    }
+  });
+}
+</script>
